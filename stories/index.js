@@ -6,10 +6,18 @@ import { action } from "@storybook/addon-actions";
 import "index.scss";
 
 import Button from "components/Button";
-import DayListItem from 'components/DayListItem';
-import DayList from 'components/DayList';
-import InterviewerListItem from 'components/InterviewerListItem';
-import InterviewerList from 'components/InterviewerList';
+import DayListItem from "components/DayListItem";
+import DayList from "components/DayList";
+import InterviewerListItem from "components/InterviewerListItem";
+import InterviewerList from "components/InterviewerList";
+import Appointment from "components/Appointment/index.js";
+import Header from "components/Appointment/Header";
+import Empty from "components/Appointment/Empty";
+import Show from "components/Appointment/Show";
+import Confirm from "components/Appointment/Confirm";
+import Status from "components/Appointment/Status"; 
+import Error from "components/Appointment/Error"; 
+
 
 //Stories for Button
 storiesOf("Button", module)
@@ -29,6 +37,24 @@ storiesOf("Button", module)
   ));
 
 //Stories for DayListItem
+const days = [
+  {
+    id: 1,
+    name: "Monday",
+    spots: 2,
+  },
+  {
+    id: 2,
+    name: "Tuesday",
+    spots: 5,
+  },
+  {
+    id: 3,
+    name: "Wednesday",
+    spots: 0,
+  },
+];
+
 storiesOf("DayListItem", module) //Initiates Storybook and registers our DayListItem component
   .addParameters({
     backgrounds: [{ name: "dark", value: "#222f3e", default: true }]
@@ -37,7 +63,7 @@ storiesOf("DayListItem", module) //Initiates Storybook and registers our DayList
   .add("Selected", () => <DayListItem name="Monday" spots={5} selected />) 
   .add("Full", () => <DayListItem name="Monday" spots={0} />)
   .add("Clickable", () => (
-    <DayListItem name="Tuesday" setDay={action("setDay")} spots={5} /> // action() allows us to create a callback that appears in the actions panel when clicked
+    <DayListItem name="Tuesday" onChange={action("setDay")} spots={1} /> // action() allows us to create a callback that appears in the actions panel when clicked
   ));
 
 //Stories for DayList
@@ -46,13 +72,13 @@ storiesOf("DayList", module)
     backgrounds: [{ name: "dark", value: "#222f3e", default: true }],
   })
   .add("Monday", () => (
-    <DayList days={days} day={"Monday"} setDay={action("setDay")} />
+    <DayList days={days} value={"Monday"} onChange={action("setDay")} />
   ))
   .add("Tuesday", () => (
-    <DayList days={days} day={"Tuesday"} setDay={action("setDay")} />
+    <DayList days={days} value={"Tuesday"} onChange={action("setDay")} />
   ))
   .add("Wednesday", () => (
-    <DayList days={days} day={"Wednesday"} setDay={action("setDay")} />
+    <DayList days={days} value={"Wednesday"} onChange={action("setDay")} />
   ));
 
 //Stories for InterviewerListItem
@@ -83,10 +109,9 @@ storiesOf("InterviewerListItem", module)
   ))
   .add("Clickable", () => (
     <InterviewerListItem
-      id={interviewer.id}
       name={interviewer.name}
       avatar={interviewer.avatar}
-      setInterviewer={action("setInterviewer")}
+      onChange={() => action("setInterviewer")(interviewer.id)}
     />
   ));
 
@@ -111,12 +136,40 @@ storiesOf("InterviewerList", module)
   .add("Selected", () => (
     <InterviewerList
       interviewers={interviewers}
-      interviewer={3}
+      value={3}
     />
   ))
   .add("Clickable", () => (
     <InterviewerList
       interviewers={interviewers}
-      setInterviewer={action("setInterviewer")}
+      onChange={action("setInterviewer")}
     />
   ));
+
+//Stories for Appointment
+const student = { name: "Lydia Miller-Jones" }
+
+storiesOf("Appointment", module)
+  .addParameters({
+      backgrounds: [{ name: "white", value: "#fff", default: true }]
+    })
+  .add("Appointment", () => <Appointment />)
+  .add("Appointment with Time", () => (
+    <Appointment time="12pm"/>
+  ))
+  .add("Header", () => <Header time="12pm" />)
+  .add("Empty", () => <Empty onAdd={action("onAdd")} />)
+  .add("Show", () => (
+    <Show student={student.name}
+          interviewer={interviewer.name}
+          onEdit={action("onEdit")}
+          onDelete={action("onDelete")}
+    />
+  ))
+  .add("Confirm", () => (
+    <Confirm message="Delete the appointment?"
+             onConfirm={action("onConfirm")}
+             onCancel={action("onCancel")} />
+  ))
+  .add("Status", () => <Status message="Deleting" />)
+  .add("Error", () => <Error message="Could not delete appointment." onClose={action("onClose")} />)
