@@ -21,6 +21,7 @@ export default function Application(props) {
 
   const setDay = day => setState(prev => ({ ...prev, day }));
 
+   // Take data from the server to set up the initial state
   useEffect(() => {
     Promise.all([
     axios.get('/api/days'),
@@ -31,20 +32,58 @@ export default function Application(props) {
     })
   }, [])
 
-  const schedule = dailyAppointments.map((appointment) => {
-  const interview = getInterview(state, appointment.interview);
+  // Add new interview in the appointments state and make the PUT request from server
+  function bookInterview(id, interview) {
+    const appointment = {
+      ...state.appointments[id],
+      interview: { ...interview }
+    };
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
   
+    return axios
+      .put(`/api/appointments/${id}`, { interview })
+      .then(() => {
+        setState({...state, appointments});
+      })    
+  };
+
+  //Deleting appointment from the appointments state and make DELETE request
+  const cancelInterview = (id) => {
+    const appointment = {
+      ...state.appointments[id],
+      interview: null
+    };
+
+    const appointments = {
+      ...state.appointments,
+      [id]: appointment
+    };
+
+    return axios
+      .delete(`/api/appointments/${id}`)
+      .then(() =>  setState({...state, appointments}))
+  };
+
+  //Create the Appointment Components
+  const schedule = dailyAppointments.map((appointment) => {
+    const interview = getInterview(state, appointment.interview);
     return (
       <Appointment
-        key={appointment.id}
-        id={appointment.id}
-        time={appointment.time}
-        interview={interview}
-        interviewers={interviewers}
+      key={appointment.id}
+      id={appointment.id}
+      time={appointment.time}
+      interview={interview}
+      interviewers={interviewers}
+      bookInterview={bookInterview}
+      cancelInterview={cancelInterview}
       />
-    );
+      );
   });
-
+  
+  //Render our component with needed props within
   return (
     <main className="layout">
       <section className="sidebar">
