@@ -47,7 +47,7 @@ export default function Application(props) {
       .put(`/api/appointments/${id}`, { interview })
       .then(() => {
         setState({...state, appointments});
-      })    
+      })
   };
 
   //Deleting appointment from the appointments state and make DELETE request
