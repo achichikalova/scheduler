@@ -24,7 +24,7 @@ export default function Form(props) {
       return;
     }
     if (!interviewer) {
-      setError("You must select an interviewer")
+      setError("Please, select an interviewer")
       return;
     }
     setError("");
@@ -36,13 +36,13 @@ export default function Form(props) {
       <section className="appointment__card-left">
         <form onSubmit={e => e.preventDefault()} autoComplete="off">
           <input
-            data-testid="student-name-input"
             className="appointment__create-input text--semi-bold"
             name="name"
             type="text"
             placeholder="Enter Student Name"
             value={student}
             onChange={(e) => setStudent(e.target.value)}
+            data-testid="student-name-input"
           />
         <section className="appointment__validation">{error}</section>
         </form>
