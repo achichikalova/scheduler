@@ -26,6 +26,7 @@ export default function useApplicationData() {
 
   // Add new interview in the appointments state and make the PUT request from server
   function bookInterview(id, interview) {
+   
     const appointment = {
       ...state.appointments[id],
       interview: { ...interview }
@@ -35,11 +36,18 @@ export default function useApplicationData() {
       [id]: appointment
     };
   
-    return axios
-      .put(`/api/appointments/${id}`, { interview })
-      .then(() => {
-        setState({...state, appointments});
-      })
+    return new Promise((resolve, reject) => {
+      axios.put(`/api/appointments/${id}`, { interview }).then(() => {
+        axios.get(`/api/days`).then(res => {
+          setState({
+            ...state,
+            appointments,
+            days: res.data
+          });
+          resolve();
+        });
+      });
+    });
   };
 
   //Deleting appointment from the appointments state and make DELETE request
@@ -54,9 +62,18 @@ export default function useApplicationData() {
       [id]: appointment
     };
 
-    return axios
-      .delete(`/api/appointments/${id}`)
-      .then(() =>  setState({...state, appointments}))
+    return new Promise((resolve, reject) => {
+      axios.delete(`/api/appointments/${id}`).then(() => {
+        axios.get(`/api/days`).then(res => {
+          setState({
+            ...state,
+            appointments,
+            days: res.data
+          });
+          resolve();
+        });
+      });
+    });
   };
   
   
