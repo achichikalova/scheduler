@@ -1,11 +1,11 @@
 describe("Appointments", () => {
-   // Reset DB before testing
+  // Reset DB before testing
   beforeEach(() => {
-   cy.request("GET", "/api/debug/reset");
-    // Visits the root of our web server
-   cy.visit("/");
-    // Select the day
-   cy.contains("Monday");
+  cy.request("GET", "/api/debug/reset");
+  // Visits the root of our web server
+  cy.visit("/");
+  // Select the day
+  cy.contains("Monday");
   });
   // Steps for Booking:
   it("should book an interview", () => {
@@ -44,6 +44,5 @@ describe("Appointments", () => {
     cy.contains("Deleting").should("exist");
     cy.contains("Deleting").should("not.exist");
     cy.contains(".appointment__card--show", "Archie Cohen").should("not.exist");
-  })
-
+  });
 });
