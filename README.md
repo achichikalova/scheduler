@@ -11,7 +11,7 @@ Data is persisted by the API server using a PostgreSQL database. The client appl
 ### Edit an appointment
 ![edit](./public/images/interview_scheduler/editing.png)
 ![create](./public/images/interview_scheduler/create_app.png)
-#### Error if credentials empty
+#### Error if input for student name or interviewer is empty
 ![error](./public/images/interview_scheduler/error.png)
 
 
