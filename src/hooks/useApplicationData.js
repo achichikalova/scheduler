@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function useApplicationData() {
-  //
+
   const [state, setState] = useState({
     day: "Monday",
     days: [],
@@ -25,7 +25,7 @@ export default function useApplicationData() {
   }, [])
 
   // Add new interview in the appointments state and make the PUT request from server
-  function bookInterview(id, interview) {
+  const bookInterview = (id, interview) => {
    
     const appointment = {
       ...state.appointments[id],
@@ -46,7 +46,10 @@ export default function useApplicationData() {
           });
           resolve();
         });
-      });
+      }).catch((err) => {
+        console.error(err);
+        reject();
+      })
     });
   };
 
@@ -72,7 +75,10 @@ export default function useApplicationData() {
           });
           resolve();
         });
-      });
+      }).catch((err) => {
+        console.error(err);
+        reject();
+      })
     });
   };
   
