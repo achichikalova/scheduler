@@ -14,6 +14,10 @@ Data is persisted by the API server using a PostgreSQL database. The client appl
 #### Error if input for student name or interviewer is empty
 ![error](./public/images/interview_scheduler/error.png)
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 9e63197a469d4acc9930fb65970337ffdd30c2ca
 ### Delete an appointment
 ![delete_confirm](./public/images/interview_scheduler/delete_confirm.png)
 ![delete](./public/images/interview_scheduler/deleting.png)
@@ -70,4 +74,8 @@ npm run cypress
 - Webpack, Babel
 - Axios, WebSockets
 - Axios
+<<<<<<< HEAD
 - Storybook, Webpack Dev Server, Jest, Testing Library
+=======
+- Storybook, Webpack Dev Server, Jest, Testing Library
+>>>>>>> 9e63197a469d4acc9930fb65970337ffdd30c2ca
